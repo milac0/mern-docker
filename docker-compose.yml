@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  calculator:
+    build: ./calculator
+    # dockerfile: Dockerfile
+    volumes:
+      - ./calculator:/app
+    ports:
+      - 3001:3000
+
+  get-lorem:
+    build: ./get-lorem
+    # dockerfile: Dockerfile
+    volumes:
+      - ./get-lorem:/app
+    ports:
+      - 3002:3000
+
+  web:
+    build: ./web
+    # build:
+    #     context: ./web
+    #     dockerfile: Dockerfile
+    volumes:
+      - ./web/src:/app/src
+    ports:
+      - 3000:3000
+    depends_on:
+      - calculator
+      - get-lorem
