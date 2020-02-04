@@ -6,13 +6,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.env !== 'production';
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   module: {
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['ts-loader']
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -23,20 +23,34 @@ module.exports = {
               hmr: process.env.env === 'dev',
             },
           },
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          },
           'postcss-loader',
           'sass-loader',
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
         ],
       }
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: [".ts", ".tsx", ".js", ".jsx"]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/template.html'
+      template: './src/index.html',
+      favicon: './src/favicon.ico'
     }),
     new PrettierPlugin(),
     new MiniCssExtractPlugin({
