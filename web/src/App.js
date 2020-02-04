@@ -4,7 +4,7 @@ const App = () => {
   const [result, setResult] = useState("");
   useEffect(() => {
     (async () => {
-      const data = await fetch("http://localhost:3001/api/v1/calculate");
+      const data = await fetch("http://localhost:8080/api/v1/calculate");
       const result = await data.json();
       setResult(result);
     })();
