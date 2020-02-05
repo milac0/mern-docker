@@ -1,45 +1,47 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const PrettierPlugin = require("prettier-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.env !== 'production';
+const devMode = process.env.env !== "production";
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: "./src/index.tsx",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['ts-loader']
+        use: ["ts-loader"]
       },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
+          devMode
+            ? "style-loader"
+            : {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  hmr: process.env.env === "dev"
+                }
+              },
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: process.env.env === 'dev',
-            },
-          },
-          {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: true
             }
           },
-          'postcss-loader',
-          'sass-loader',
-        ],
+          "postcss-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: 'file-loader',
-          },
-        ],
+            loader: "file-loader"
+          }
+        ]
       }
     ]
   },
@@ -49,18 +51,18 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      favicon: './src/favicon.ico'
+      template: "./src/index.html",
+      favicon: "./src/favicon.ico"
     }),
     new PrettierPlugin(),
     new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+      filename: devMode ? "[name].css" : "[name].[hash].css",
+      chunkFilename: devMode ? "[id].css" : "[id].[hash].css"
     })
   ],
   output: {
-    path: path.resolve(__dirname, '../', 'dist'),
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, "../", "dist"),
+    publicPath: "/",
+    filename: "bundle.js"
   }
 };
