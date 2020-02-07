@@ -1,0 +1,12 @@
+@import "../../theme/variables";
+
+.header {
+  background: $primary;
+  text-align: center;
+  > h1 {
+    color: #fff;
+    padding: 0.5em;
+    margin: 0;
+    margin-bottom: 0.5em;
+  }
+}
