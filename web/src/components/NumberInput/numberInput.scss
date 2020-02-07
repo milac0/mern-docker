@@ -1,0 +1,13 @@
+@import "../../theme/variables";
+
+.input {
+  border: 2px solid $primary;
+  border-radius: 5px;
+  outline: none;
+  padding: 0.25em;
+  width: 5em;
+
+  &:focus {
+    border-color: $secondary;
+  }
+}
