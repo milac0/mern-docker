@@ -2,8 +2,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import Header from "./components/Header/Header";
 import NumberInput from "./components/NumberInput/NumberInput";
-import Option from "./enums/Option";
 import SelectOption from "./components/SelectOption/SelectOption";
+import Text from "./components/Text/Text";
 
 axios.defaults.baseURL = "http://localhost:8080/api/v1";
 
@@ -11,40 +11,21 @@ interface Props {}
 
 const App: React.FC<Props> = () => {
   const [n, setN] = useState("");
-  const [select, setSelect] = useState({
-    select1: Option.bacon,
-    select2: Option.bacon
-  });
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { data: result } = await axios.get("/calculate");
-  //     setResult(result);
-  //   })();
-  // }, []);
+  const [text1, setText1] = useState("");
+  const [text2, setText2] = useState("");
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setN(e.currentTarget.value);
 
-  const handleOptionChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    id: string
-  ) => {
-    setSelect({ ...select, [id]: e.target.value as Option });
-  };
-  const { select1, select2 } = select;
   return (
     <Fragment>
       <Header />
       <NumberInput handleChange={handleNumberChange} />
-      <SelectOption
-        handleChange={e => handleOptionChange(e, "select1")}
-        select={select1}
-      />
-      <SelectOption
-        handleChange={e => handleOptionChange(e, "select2")}
-        select={select2}
-      />
+      <SelectOption n={n} handleText={setText1} />
+      <Text text={text1} />
+      <SelectOption n={n} handleText={setText2} />
+      <Text text={text2} />
       {/* 
         <button>Compare</button>
         <div>
