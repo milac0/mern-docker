@@ -1,0 +1,11 @@
+@import "../../theme/variables";
+
+.btn {
+  background-color: $primary;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  margin: 1em auto;
+  outline: none;
+  padding: 0.5em;
+}
