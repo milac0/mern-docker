@@ -6,20 +6,23 @@ import { ILorem } from '../interface/ILorem';
 const getRandomNum = require('../../helpers/getRandomNum');
 
 router.route("/").post((req: Request, res: Response) => {
-  const file = fs.createWriteStream('./text.txt');
   const {name, n} = req.body;
+  const fileName = `./src/texts/${name}.txt`;
+  const file = fs.createWriteStream(fileName);
 
   Lorem.findOne({ name })
-    .then((lorem: ILorem) => {
+    .then(async (lorem: ILorem) => {
       const words = lorem.words;
       const max = words.length;
 
       for (let i=0; i<n-1; i++) {
-          file.write(`${words[getRandomNum(max)]} `);
+          if(!file.write(`${words[getRandomNum(max)]} `)) {
+            await new Promise(resolve => file.once('drain', resolve));
+        }          
       }
       file.write(words[getRandomNum(max)]);
 
-      const readStream = fs.createReadStream('./text.txt')
+      const readStream = fs.createReadStream(fileName)
       res.status(200);
       readStream.pipe(res);
     })
