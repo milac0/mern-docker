@@ -12,13 +12,18 @@ const SelectOption: React.FC<Props> = ({ handleText, n }) => {
   const [select, setSelect] = useState(Option.bacon);
 
   useEffect(() => {
+    if (n === "" || n[0] === "0" || n[0] === "-") {
+      handleText("");
+      return;
+    }
     (async () => {
-      const body = { name: select, n };
+      const params = { name: select, n };
       try {
-        const {
-          data: { string }
-        } = await axios.post("/lorem", body);
-        handleText(string);
+        const { data } = await axios.get("/lorem", {
+          params,
+          responseType: "stream"
+        });
+        handleText(data.slice(0, 25000));
       } catch (e) {
         handleText("Error downloading data. Try again!");
       }
