@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const PrettierPlugin = require("prettier-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.env !== "production";
+const devMode = process.env.env !== "prod";
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -17,12 +17,10 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          devMode
-            ? "style-loader"
-            : {
+              {
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                  hmr: process.env.env === "dev"
+                  hmr: devMode
                 }
               },
           {
