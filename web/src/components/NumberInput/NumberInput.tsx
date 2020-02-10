@@ -11,6 +11,8 @@ const NumberInput: React.FC<Props> = ({ handleChange }) => {
       className={styles.input}
       type="number"
       placeholder="n of words"
+      min={0}
+      // max="max input number"
       onChange={handleChange}
     ></input>
   );
