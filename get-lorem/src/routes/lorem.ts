@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 import { ILorem } from '../interface/ILorem';
 const getRandomNum = require('../../helpers/getRandomNum');
 
-router.route("/").post((req: Request, res: Response) => {
-  const {name, n} = req.body;
+router.route("/").get((req: Request, res: Response) => {
+  const {name, n} = req.query;
   const fileName = `./src/texts/${name}.txt`;
   const file = fs.createWriteStream(fileName);
 
@@ -24,6 +24,7 @@ router.route("/").post((req: Request, res: Response) => {
 
       const readStream = fs.createReadStream(fileName)
       res.status(200);
+      res.setHeader('Content-Type', 'text/plain');
       readStream.pipe(res);
     })
     .catch((e: Error) => res.status(500).json({ msg: e }))
