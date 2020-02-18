@@ -8,4 +8,4 @@ const loremSchema: Schema = new Schema({
 
 const Lorem = mongoose.model<ILorem>("Lorem", loremSchema);
 
-module.exports = Lorem;
+export default Lorem;

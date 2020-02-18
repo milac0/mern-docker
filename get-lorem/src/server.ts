@@ -1,13 +1,13 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const helmet = require("helmet");
-const mongoose = require("mongoose");
-require('dotenv').config()
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import dotenv from 'dotenv';
+import loremRouter from "./routes/lorem";
 
+dotenv.config();
 const port = process.env.PORT || 3000;
-
-const loremRouter = require("./routes/lorem");
+const app = express();
 
 mongoose.connect(process.env.MONGO_DB_URI, {
     useNewUrlParser: true,
