@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./numberInput.scss";
 
 interface Props {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleNumberChange: (num: number) => void;
 }
 
-const NumberInput: React.FC<Props> = ({ handleChange }) => {
+const NumberInput: React.FC<Props> = ({ handleNumberChange }) => {
   return (
     <input
       className={styles.input}
@@ -13,7 +13,7 @@ const NumberInput: React.FC<Props> = ({ handleChange }) => {
       placeholder="n of words"
       min={0}
       // max="max input number"
-      onChange={handleChange}
+      onChange={e => handleNumberChange(parseInt(e.target.value, 10))}
     ></input>
   );
 };

@@ -1,35 +1,37 @@
 import React, { useState, Fragment } from "react";
 import axios from "axios";
+import Option from "./enums/Option";
 import Header from "./components/Header/Header";
 import NumberInput from "./components/NumberInput/NumberInput";
 import SelectOption from "./components/SelectOption/SelectOption";
 import Text from "./components/Text/Text";
 import Results from "./components/Results/Results";
 import Button from "./components/Button/Button";
+import compareStrings from "./services/compareStrings";
+import useFetch from "./hooks/useFetch";
 
 axios.defaults.baseURL = "http://localhost:8080/api/v1";
 
 interface Props {}
 
 const App: React.FC<Props> = () => {
-  const [n, setN] = useState("");
+  const [select1, setSelect1] = useState(Option.bacon);
+  const [select2, setSelect2] = useState(Option.bacon);
+  const [numberOfWords, setNumberOfWords] = useState(0);
   const [similarity, setSimilarity] = useState(0);
   const [showResults, setShowResults] = useState(false);
 
-  const [text1, setText1] = useState("");
-  const [text2, setText2] = useState("");
+  const handleNumberChange = (num: number) => {
+    setNumberOfWords(num);
+  };
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setN(e.currentTarget.value);
+  const { data: data1, loading: loading1 } = useFetch(select1, numberOfWords);
+  const { data: data2, loading: loading2 } = useFetch(select2, numberOfWords);
 
-  const compareStrings = async () => {
-    const body = {
-      string1: text1,
-      string2: text2
-    };
-    const {
-      data: { similarity }
-    } = await axios.post("/calculate", body);
+  //drill loading to Text
+
+  const handleButtonClick = async () => {
+    const similarity = await compareStrings(data1, data2);
     setSimilarity(similarity);
     setShowResults(true);
   };
@@ -37,13 +39,13 @@ const App: React.FC<Props> = () => {
   return (
     <Fragment>
       <Header />
-      <NumberInput handleChange={handleNumberChange} />
-      <SelectOption n={n} handleText={setText1} />
-      <Text text={text1} />
-      <SelectOption n={n} handleText={setText2} />
-      <Text text={text2} />
-      <Button compareStrings={compareStrings} />
-      <Results similarity={similarity} showResults={showResults} />
+      <NumberInput handleNumberChange={handleNumberChange} />
+      <SelectOption onSelectionChange={setSelect1} />
+      <Text text={data1} />
+      <SelectOption onSelectionChange={setSelect2} />
+      <Text text={data2} />
+      <Button handleButtonClick={handleButtonClick} />
+      {showResults && <Results similarity={similarity} />}
     </Fragment>
   );
 };

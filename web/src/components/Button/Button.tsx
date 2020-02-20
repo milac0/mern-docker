@@ -2,12 +2,12 @@ import React from "react";
 import styles from "./button.scss";
 
 interface Props {
-  compareStrings: () => void;
+  handleButtonClick: () => void;
 }
 
-const Button: React.FC<Props> = ({ compareStrings }) => {
+const Button: React.FC<Props> = ({ handleButtonClick }) => {
   return (
-    <button onClick={compareStrings} className={styles.btn}>
+    <button onClick={handleButtonClick} className={styles.btn}>
       Compare
     </button>
   );
